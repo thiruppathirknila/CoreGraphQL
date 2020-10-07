@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace Core.Api.Data.Repository
         {
             try
             {
-                return await _context.Set<T>().ToListAsync();
+                return await _context.Set<T>().Take(5000) .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -86,8 +87,12 @@ namespace Core.Api.Data.Repository
         {
             try
             {
-                return _context.Set<T>().Find(id);
+                var result= _context.Set<T>().Find(id);
+                _context.Entry(result).State = EntityState.Detached;
+                return result;
             }
+                
+                 
             catch (Exception ex)
             {
 

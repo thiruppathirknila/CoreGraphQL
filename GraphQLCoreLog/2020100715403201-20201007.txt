@@ -1,2 +1,0 @@
-2020-10-07 15:40:32.037 +05:30 [Information] In Startup.ConfigureServices, Configure Services File Process Startd
-2020-10-07 15:40:32.130 +05:30 [Information] Out Program.ConfigureServices, Configure Services File Process End

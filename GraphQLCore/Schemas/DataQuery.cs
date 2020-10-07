@@ -19,7 +19,7 @@ namespace GraphQLCore.Schemas
             this.Description = "Getting Processor Details";
 
             Field<StringGraphType>("hi", resolve: t => { return "Hello World"; });
-            Field<ListGraphType<ResponseCodeType>>("processors", resolve: context => {
+            Field<ListGraphType<ResponseCodeType>>("merchantReports", resolve: context => {
                 try
                 {
                     Logger.InformationLog($"In Field DataQuery processors.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
@@ -33,7 +33,7 @@ namespace GraphQLCore.Schemas
                 }
               
             });
-            Field<ResponseCodeType>("processor", arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id", Description = "Id" }),
+            Field<ResponseCodeType>("merchantReport", arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id", Description = "Id" }),
                     resolve: context => {
                         try
                         {

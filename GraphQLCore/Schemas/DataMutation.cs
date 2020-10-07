@@ -17,15 +17,15 @@ namespace GraphQLCore.Schemas
             _unitOfWork = unitOfWork;
 
             this.Name = "DataMutation";
-            this.Description = "Processor Manage";
+            this.Description = "Manage MerchantReport";
 
-            Field<ResponseCodeType>("addProcessor", arguments: new QueryArguments(new QueryArgument<NonNullGraphType<ResponseCodeInputType>> { Name = "responseCodeDetails" }),
+            Field<ResponseCodeType>("addmerchantReport", arguments: new QueryArguments(new QueryArgument<NonNullGraphType<ResponseCodeInputType>> { Name = "requestDetails" }),
                resolve: context =>
                {
                    try
                    {
                        Logger.InformationLog($"In Field DataMutation addProcessor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
-                       var response = context.GetArgument<ResponseCodes>("responseCodeDetails");
+                       var response = context.GetArgument<ResponseCodes>("requestDetails");
                        _unitOfWork.responseCode.Add(response);
                        return response;
                    }
@@ -37,16 +37,19 @@ namespace GraphQLCore.Schemas
 
                });
 
-            Field<ResponseCodeType>("editProcessor", arguments: new QueryArguments(new QueryArgument<NonNullGraphType<ResponseCodeInputType>> { Name = "responseCodeDetails" }),
+            Field<ResponseCodeType>("editmerchantReport", arguments: new QueryArguments(new QueryArgument<NonNullGraphType<ResponseCodeInputType>> { Name = "requestDetails" }),
                resolve: context =>
                {
                    try
                    {
                        Logger.InformationLog($"In Field DataMutation editProcessor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
-                       var response = context.GetArgument<ResponseCodes>("responseCodeDetails");
-                       response = _unitOfWork.responseCode.GetById(response.Id);
-                       if (response != null) { _unitOfWork.responseCode.Update(response); }
-                       else { response = new ResponseCodes() { Message = "Invalid Id", Description = "Please check Id",Processor="Empty" }; }
+                       var response = context.GetArgument<ResponseCodes>("requestDetails");
+                       response = _unitOfWork.responseCode.GetById(response.id);
+                       if (response != null) {
+                           response = context.GetArgument<ResponseCodes>("requestDetails");
+                           _unitOfWork.responseCode.Update(response);
+                       }
+                       else { response = new ResponseCodes() { auth_code = "Invalid Id", auth_response = "Please check Id",processor="Empty" }; }
                        return response;
                    }
                    catch (Exception ex)
@@ -56,7 +59,7 @@ namespace GraphQLCore.Schemas
                    }
                });
 
-            Field<ResponseCodeType>("deleteProcessor", arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id", Description = "Processor ID" }),
+            Field<ResponseCodeType>("deletemerchantReport", arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id", Description = "MerchantReport ID" }),
                    resolve: context =>
                    {
                        try
@@ -64,7 +67,7 @@ namespace GraphQLCore.Schemas
                            Logger.InformationLog($"In Field DataMutation deleteProcessor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
                            var response = _unitOfWork.responseCode.GetById(context.GetArgument<int>("id"));
                            if (response != null) { _unitOfWork.responseCode.Delete(response); }
-                           else { response = new ResponseCodes() { Message = "Invalid Id", Description = "Please check Id" }; }
+                           else { response = new ResponseCodes() { auth_code = "Invalid Id", auth_response = "Please check Id", processor = "Empty" }; }
                            return response;
                        }
                        catch (Exception ex)
