@@ -11,7 +11,8 @@ namespace GraphQLCore.Schemas
     public class DataMutation : ObjectGraphType
     {
         private IUnitOfWork _unitOfWork;
-        public DataMutation(IUnitOfWork unitOfWork) {
+        public DataMutation(IUnitOfWork unitOfWork)
+        {
 
             _unitOfWork = unitOfWork;
 
@@ -33,7 +34,6 @@ namespace GraphQLCore.Schemas
                        Logger.ErrorLog($"Exception Field DataMutation addProcessor. exception={ex.Message}, Trace={ex.StackTrace}");
                        throw ex;
                    }
-                  
 
                });
 
@@ -44,7 +44,9 @@ namespace GraphQLCore.Schemas
                    {
                        Logger.InformationLog($"In Field DataMutation editProcessor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
                        var response = context.GetArgument<ResponseCodes>("responseCodeDetails");
-                       _unitOfWork.responseCode.Update(response);
+                       response = _unitOfWork.responseCode.GetById(response.Id);
+                       if (response != null) { _unitOfWork.responseCode.Update(response); }
+                       else { response = new ResponseCodes() { Message = "Invalid Id", Description = "Please check Id",Processor="Empty" }; }
                        return response;
                    }
                    catch (Exception ex)
@@ -52,18 +54,17 @@ namespace GraphQLCore.Schemas
                        Logger.ErrorLog($"Exception Field DataMutation editProcessor. exception={ex.Message}, Trace={ex.StackTrace}");
                        throw ex;
                    }
-                   
-
                });
 
             Field<ResponseCodeType>("deleteProcessor", arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id", Description = "Processor ID" }),
-                   resolve: context => 
+                   resolve: context =>
                    {
                        try
                        {
                            Logger.InformationLog($"In Field DataMutation deleteProcessor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
                            var response = _unitOfWork.responseCode.GetById(context.GetArgument<int>("id"));
-                           _unitOfWork.responseCode.Delete(response);
+                           if (response != null) { _unitOfWork.responseCode.Delete(response); }
+                           else { response = new ResponseCodes() { Message = "Invalid Id", Description = "Please check Id" }; }
                            return response;
                        }
                        catch (Exception ex)
@@ -71,7 +72,6 @@ namespace GraphQLCore.Schemas
                            Logger.ErrorLog($"Exception Field DataMutation deleteProcessor. exception={ex.Message}, Trace={ex.StackTrace}");
                            throw ex;
                        }
-                     
                    });
         }
     }
