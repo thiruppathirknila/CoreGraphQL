@@ -16,19 +16,19 @@ namespace GraphQLCore.Schemas
 
             _unitOfWork = unitOfWork;
             this.Name = "DataQuery";
-            this.Description = "Getting Processor Details";
+            this.Description = "Getting merchantReport Details";
 
             Field<StringGraphType>("hi", resolve: t => { return "Hello World"; });
             Field<ListGraphType<ResponseCodeType>>("merchantReports", resolve: context => {
                 try
                 {
-                    Logger.InformationLog($"In Field DataQuery processors.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
+                    Logger.InformationLog($"In Field DataQuery merchantReports.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
                     return _unitOfWork.responseCode.GetAll();
 
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorLog($"Exception Field DataQuery processors. exception={ex.Message}, Trace={ex.StackTrace}");
+                    Logger.ErrorLog($"Exception Field DataQuery merchantReports. exception={ex.Message}, Trace={ex.StackTrace}");
                     throw ex;
                 }
               
@@ -37,12 +37,12 @@ namespace GraphQLCore.Schemas
                     resolve: context => {
                         try
                         {
-                            Logger.InformationLog($"In Field DataQuery processor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
+                            Logger.InformationLog($"In Field DataQuery merchantReport.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
                             return _unitOfWork.responseCode.Get(context.GetArgument<int>("id"));
                         }
                         catch (Exception ex)
                         {
-                            Logger.ErrorLog($"Exception Field DataQuery processor. exception={ex.Message}, Trace={ex.StackTrace}");
+                            Logger.ErrorLog($"Exception Field DataQuery merchantReport. exception={ex.Message}, Trace={ex.StackTrace}");
                             throw ex;
                         }
 

@@ -24,14 +24,14 @@ namespace GraphQLCore.Schemas
                {
                    try
                    {
-                       Logger.InformationLog($"In Field DataMutation addProcessor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
+                       Logger.InformationLog($"In Field DataMutation addmerchantReport.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
                        var response = context.GetArgument<ResponseCodes>("requestDetails");
                        _unitOfWork.responseCode.Add(response);
                        return response;
                    }
                    catch (Exception ex)
                    {
-                       Logger.ErrorLog($"Exception Field DataMutation addProcessor. exception={ex.Message}, Trace={ex.StackTrace}");
+                       Logger.ErrorLog($"Exception Field DataMutation addmerchantReport. exception={ex.Message}, Trace={ex.StackTrace}");
                        throw ex;
                    }
 
@@ -42,7 +42,7 @@ namespace GraphQLCore.Schemas
                {
                    try
                    {
-                       Logger.InformationLog($"In Field DataMutation editProcessor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
+                       Logger.InformationLog($"In Field DataMutation editmerchantReport.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
                        var response = context.GetArgument<ResponseCodes>("requestDetails");
                        response = _unitOfWork.responseCode.GetById(response.id);
                        if (response != null) {
@@ -54,7 +54,7 @@ namespace GraphQLCore.Schemas
                    }
                    catch (Exception ex)
                    {
-                       Logger.ErrorLog($"Exception Field DataMutation editProcessor. exception={ex.Message}, Trace={ex.StackTrace}");
+                       Logger.ErrorLog($"Exception Field DataMutation editmerchantReport. exception={ex.Message}, Trace={ex.StackTrace}");
                        throw ex;
                    }
                });
@@ -64,7 +64,7 @@ namespace GraphQLCore.Schemas
                    {
                        try
                        {
-                           Logger.InformationLog($"In Field DataMutation deleteProcessor.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
+                           Logger.InformationLog($"In Field DataMutation deletemerchantReport.Start, context:" + JsonConvert.SerializeObject(context.FieldAst));
                            var response = _unitOfWork.responseCode.GetById(context.GetArgument<int>("id"));
                            if (response != null) { _unitOfWork.responseCode.Delete(response); }
                            else { response = new ResponseCodes() { auth_code = "Invalid Id", auth_response = "Please check Id", processor = "Empty" }; }
@@ -72,7 +72,7 @@ namespace GraphQLCore.Schemas
                        }
                        catch (Exception ex)
                        {
-                           Logger.ErrorLog($"Exception Field DataMutation deleteProcessor. exception={ex.Message}, Trace={ex.StackTrace}");
+                           Logger.ErrorLog($"Exception Field DataMutation deletemerchantReport. exception={ex.Message}, Trace={ex.StackTrace}");
                            throw ex;
                        }
                    });

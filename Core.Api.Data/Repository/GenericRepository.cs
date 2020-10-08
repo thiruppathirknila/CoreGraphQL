@@ -35,7 +35,7 @@ namespace Core.Api.Data.Repository
         {
             try
             {
-                return await _context.Set<T>().Take(5000) .ToListAsync();
+                return await _context.Set<T>().Take(8000) .ToListAsync();
             }
             catch (Exception ex)
             {

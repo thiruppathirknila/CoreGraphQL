@@ -29,7 +29,7 @@ namespace CoreRestOData.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return Enumerable.Range(1, 100).Select(index => new WeatherForecast
             {
                 Id = Guid.NewGuid(),
                 Date = DateTime.Now.AddDays(index),
